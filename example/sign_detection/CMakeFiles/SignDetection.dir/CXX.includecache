@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_detection/SignDetection.cpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_detection/SignDetection.cpp
 SignDetection.h
-/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_detection/SignDetection.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_detection/SignDetection.h
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_detection/SignDetection.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_detection/SignDetection.h
 iostream
 -
 vector
@@ -22,15 +22,15 @@ cmath
 cstdio
 -
 opencv2/videoio.hpp
-/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_detection/opencv2/videoio.hpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_detection/opencv2/videoio.hpp
 opencv2/highgui.hpp
-/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_detection/opencv2/highgui.hpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_detection/opencv2/highgui.hpp
 opencv2/imgproc.hpp
-/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_detection/opencv2/imgproc.hpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_detection/opencv2/imgproc.hpp
 Singleton.h
-/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_detection/Singleton.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_detection/Singleton.h
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_detection/Singleton.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_detection/Singleton.h
 cstddef
 -
 
