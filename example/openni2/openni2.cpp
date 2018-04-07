@@ -97,7 +97,7 @@ bool OpenNI2::init(bool is_colorize_disp, bool is_fixed_max_disp, int image_mode
         std::cout << "\nDevice doesn't contain image generator or it is not selected." << std::endl;
     }
 
-    if( capture.get(cv::CAP_OPENNI_IR_GENERATOR_PRESENT)==false ) //test code == false
+    if( capture.get(cv::CAP_OPENNI_IR_GENERATOR_PRESENT) )
     {
         std::cout <<
             "\nIR generator output mode:" << std::endl <<

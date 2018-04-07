@@ -49,7 +49,7 @@ struct api_kinect_cv_obj_t
 };
 
 
-bool
+void
 api_kinect_cv_get_obtacle_rect(Mat& depthMap,
                                vector< Rect > &output_boxes,
                                Rect &roi,

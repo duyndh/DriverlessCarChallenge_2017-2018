@@ -6,15 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignProc.cpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignProc.cpp
 SignProc.h
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignProc.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignProc.h
 fstream
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/fstream
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/fstream
 iostream
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/iostream
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/iostream
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignProc.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignProc.h
 eigen3/Eigen/Dense
 -
 eigen3/Eigen/Sparse
@@ -24,27 +24,27 @@ eigen3/Eigen/Core
 eigen3/Eigen/SVD
 -
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignRecognition.cpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignRecognition.cpp
 SignRecognition.h
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignRecognition.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignRecognition.h
 fstream
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/fstream
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/fstream
 math.h
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/math.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/math.h
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignRecognition.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignRecognition.h
 SignProc.h
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignProc.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignProc.h
 eigen3/Eigen/Dense
 -
 eigen3/Eigen/Sparse
 -
 iostream
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/iostream
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/iostream
 algorithm
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/algorithm
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/algorithm
 opencv2/opencv.hpp
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/opencv2/opencv.hpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/opencv2/opencv.hpp
 opencv2/xfeatures2d/nonfree.hpp
 -
 

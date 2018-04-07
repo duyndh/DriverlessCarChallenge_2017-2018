@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ubuntu/DriverlessCarChallenge_2017-2018/example
+CMAKE_SOURCE_DIR = /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ubuntu/DriverlessCarChallenge_2017-2018/example
+CMAKE_BINARY_DIR = /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example
 
 # Include any dependencies generated for this target.
 include ObjectRecognition/CMakeFiles/ObjectRecognition.dir/depend.make
@@ -51,17 +51,17 @@ include ObjectRecognition/CMakeFiles/ObjectRecognition.dir/flags.make
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignProc.cpp.o: ObjectRecognition/CMakeFiles/ObjectRecognition.dir/flags.make
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignProc.cpp.o: ObjectRecognition/SignProc.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ubuntu/DriverlessCarChallenge_2017-2018/example/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignProc.cpp.o"
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/ObjectRecognition.dir/SignProc.cpp.o -c /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignProc.cpp
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/ObjectRecognition.dir/SignProc.cpp.o -c /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignProc.cpp
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignProc.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ObjectRecognition.dir/SignProc.cpp.i"
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignProc.cpp > CMakeFiles/ObjectRecognition.dir/SignProc.cpp.i
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignProc.cpp > CMakeFiles/ObjectRecognition.dir/SignProc.cpp.i
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignProc.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ObjectRecognition.dir/SignProc.cpp.s"
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignProc.cpp -o CMakeFiles/ObjectRecognition.dir/SignProc.cpp.s
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignProc.cpp -o CMakeFiles/ObjectRecognition.dir/SignProc.cpp.s
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignProc.cpp.o.requires:
 .PHONY : ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignProc.cpp.o.requires
@@ -74,17 +74,17 @@ ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignProc.cpp.o.provides.build
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.o: ObjectRecognition/CMakeFiles/ObjectRecognition.dir/flags.make
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.o: ObjectRecognition/SignRecognition.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ubuntu/DriverlessCarChallenge_2017-2018/example/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.o"
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.o -c /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignRecognition.cpp
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.o -c /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignRecognition.cpp
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.i"
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignRecognition.cpp > CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.i
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignRecognition.cpp > CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.i
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.s"
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/SignRecognition.cpp -o CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.s
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/SignRecognition.cpp -o CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.s
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.o.requires:
 .PHONY : ObjectRecognition/CMakeFiles/ObjectRecognition.dir/SignRecognition.cpp.o.requires
@@ -108,8 +108,8 @@ bin/Release/libObjectRecognition.a: ObjectRecognition/CMakeFiles/ObjectRecogniti
 bin/Release/libObjectRecognition.a: ObjectRecognition/CMakeFiles/ObjectRecognition.dir/build.make
 bin/Release/libObjectRecognition.a: ObjectRecognition/CMakeFiles/ObjectRecognition.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX static library ../bin/Release/libObjectRecognition.a"
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && $(CMAKE_COMMAND) -P CMakeFiles/ObjectRecognition.dir/cmake_clean_target.cmake
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ObjectRecognition.dir/link.txt --verbose=$(VERBOSE)
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && $(CMAKE_COMMAND) -P CMakeFiles/ObjectRecognition.dir/cmake_clean_target.cmake
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ObjectRecognition.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/build: bin/Release/libObjectRecognition.a
@@ -120,10 +120,10 @@ ObjectRecognition/CMakeFiles/ObjectRecognition.dir/requires: ObjectRecognition/C
 .PHONY : ObjectRecognition/CMakeFiles/ObjectRecognition.dir/requires
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/clean:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition && $(CMAKE_COMMAND) -P CMakeFiles/ObjectRecognition.dir/cmake_clean.cmake
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition && $(CMAKE_COMMAND) -P CMakeFiles/ObjectRecognition.dir/cmake_clean.cmake
 .PHONY : ObjectRecognition/CMakeFiles/ObjectRecognition.dir/clean
 
 ObjectRecognition/CMakeFiles/ObjectRecognition.dir/depend:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/DriverlessCarChallenge_2017-2018/example /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition /home/ubuntu/DriverlessCarChallenge_2017-2018/example /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectRecognition/CMakeFiles/ObjectRecognition.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectRecognition/CMakeFiles/ObjectRecognition.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : ObjectRecognition/CMakeFiles/ObjectRecognition.dir/depend
 

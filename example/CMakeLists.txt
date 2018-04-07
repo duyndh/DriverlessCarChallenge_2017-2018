@@ -88,7 +88,6 @@ target_link_libraries( ${exec_name1} i2c-pwm uart HAL)
 set( exec_name2 test-autocar)
 set( source_files2
     main_pid/automaticCar.cpp
-    main_pid/sign_recognizer.cpp
     # if you write extra libraries for automaticCar.cpp, declare them here.
     # See CMakeLists.txt in sub-directory for more details. Eg: 
     # main_pid/depth.h

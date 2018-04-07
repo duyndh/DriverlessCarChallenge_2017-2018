@@ -1,4 +1,4 @@
-# Install script for directory: /home/ubuntu/DriverlessCarChallenge_2017-2018/example/sign_recognize
+# Install script for directory: /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/sign_recognize
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

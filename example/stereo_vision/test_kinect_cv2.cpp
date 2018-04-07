@@ -33,25 +33,11 @@ getkey()
 int
 main( int argc, char** argv )
 {
-	namedWindow("Control");
     VideoCapture capture;
-	int iLowH = 70;
-	int iHighH = 100;
-	int iLowS = 200; 
-	int iHighS = 255;
-	int iLowV = 20;
-	int iHighV = 130;
-	int iLowArea = 10000;
-	createTrackbar("LowH", "Control", &iLowH, 179); //Hue (0 - 179)
-	createTrackbar("HighH", "Control", &iHighH, 179);
-	createTrackbar("LowS", "Control", &iLowS, 255); //Saturation (0 - 255)
-	createTrackbar("HighS", "Control", &iHighS, 255);
-	createTrackbar("LowV", "Control", &iLowV, 255);//Value (0 - 255)
-	createTrackbar("HighV", "Control", &iHighV, 255);	
-	createTrackbar("LowArea", "Control", &iLowArea, 30000);
-    capture.open( CV_CAP_OPENNI2 );
+
+    //capture.open( CV_CAP_OPENNI2 );
     //if( !capture.isOpened() )
-    //capture.open( CV_CAP_OPENNI );
+    capture.open( CV_CAP_OPENNI );
 
     if( !capture.isOpened() )
     {
@@ -95,7 +81,7 @@ main( int argc, char** argv )
     bool stop = false;
 
 
-    bool is_show = true;
+    bool is_show = false;
     bool is_save_file = true;
 
     if(is_save_file)
@@ -111,10 +97,8 @@ main( int argc, char** argv )
     int slice_nb = 3;
     int lower_slice_idx = 3;
     int upper_slice_idx = lower_slice_idx + slice_nb;
-    //int lower_bound = DIST_MIN + lower_slice_idx * SLICE_DEPTH;
-    //int upper_bound = lower_bound + slice_nb*SLICE_DEPTH;
-	int lower_bound = 30;
-	int upper_bound = 70;	
+    int lower_bound = DIST_MIN + lower_slice_idx * SLICE_DEPTH;
+    int upper_bound = lower_bound + slice_nb*SLICE_DEPTH;
 
     Rect center_rect = rects[lower_slice_idx];
     center_rect = center_rect + Size(0, slice_nb*SLICE_DEPTH);
@@ -141,39 +125,9 @@ main( int argc, char** argv )
 	            cout<< endl<< "Error: Cannot bgr gray image";
 	            return -1;
 	        }
-		Mat imgHSV;
+
             crop_grayImage = grayImage(roi);
             crop_depthMap = depthMap(roi);
-		cvtColor(bgrImage, imgHSV, COLOR_BGR2HSV);
-		
-		Mat imgThresholded;
-		
-		inRange(imgHSV, Scalar(iLowH, iLowS, iLowV), Scalar(iHighH, iHighS, iHighV), imgThresholded); //Threshold the image
-		erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-		dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-		dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-		erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-
-		Moments oMoments = moments(imgThresholded);
-		
-		double dM01 = oMoments.m01;
-		double dM10 = oMoments.m10;
-		double dArea = oMoments.m00;
-		
-		if(dArea > iLowArea) {
-			cout << "Not obstacle: " << dArea << endl;
-		}
-		else {
-			int posX = dM10/dArea;
-			int posY = dM01/dArea;
-					circle(bgrImage, Point(posX,posY), 30, Scalar(255,0,0), -1);
-			cout << "Obstacle: " << posX << ", " << posY << endl;
-		}
-
-
-		imshow("Thresholded Image", imgThresholded); //show the thresholded image
-		imshow("Obstacle", bgrImage);
-		//imshow("Original", imgOriginal); //show the original image
             if( is_show )
             {
                 Rect roi(0, 132, 640, 238);
@@ -188,13 +142,11 @@ main( int argc, char** argv )
                 {
 //                    rectangle( binImg, output_boxes[i], Scalar( 255) );
 
-                    //intersect = output_boxes[i] & center_rect;
-			intersect = output_boxes[i];
-                    
+                    intersect = output_boxes[i] & center_rect;
                     if( intersect.area() != 0 )
                     {
                         rectangle( binImg, intersect, Scalar( 255) );
-                        //cout<< endl<< "Has Collision detect"<< flush;
+                        cout<< endl<< "Has Collision detect"<< flush;
                     }
                 }
 

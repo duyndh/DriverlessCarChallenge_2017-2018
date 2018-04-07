@@ -18,23 +18,13 @@
 #include <iostream>
 #include "Hal.h"
 #include "LCDI2C.h"
-#include <vector>
-#include <math.h>
-#include <thread>
-#include <mutex>
-#include <pthread.h>
-#include "./sign_recognizer.h"
-#define OFFSET_DIVIDE 20
 using namespace openni;
 using namespace EmbeddedFramework;
 #define SAMPLE_READ_WAIT_TIMEOUT 2000 //2000ms
-#define VIDEO_FRAME_WIDTH 320
+#define VIDEO_FRAME_WIDTH 320	
 #define VIDEO_FRAME_HEIGHT 240
-#define TEST_DETECT_SIGN 0
-#define ACCEPT_SIGN 1
-#define N_SAMPLE 1
-#define ALPHA 1.7
 
+<<<<<<< HEAD
 #define IMG_DIR "img9.png"
 
 #define FRAME_WIDTH 640
@@ -85,72 +75,82 @@ PCA9685 *pca9685 = new PCA9685();
 
 cv::Mat remOutlier(const cv::Mat &gray)
 {
+=======
+#define SW1_PIN	160
+#define SW2_PIN	161
+#define SW3_PIN	163
+#define SW4_PIN	164
+#define SENSOR	166
+cv::Mat remOutlier(const cv::Mat &gray) {
+>>>>>>> parent of 035dac7... Semi Round
     int esize = 1;
-    cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT,
-                                                cv::Size(2 * esize + 1, 2 * esize + 1),
-                                                cv::Point(esize, esize));
+    cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT,
+        cv::Size( 2*esize + 1, 2*esize+1 ),
+        cv::Point( esize, esize ) );
     cv::erode(gray, gray, element);
-    std::vector<std::vector<cv::Point>> contours, polygons;
-    std::vector<cv::Vec4i> hierarchy;
+    std::vector< std::vector<cv::Point> > contours, polygons;
+    std::vector< cv::Vec4i > hierarchy;
     cv::findContours(gray, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-    for (size_t i = 0; i < contours.size(); ++i)
-    {
+    for (size_t i = 0; i < contours.size(); ++i) {
         std::vector<cv::Point> p;
         cv::approxPolyDP(cv::Mat(contours[i]), p, 2, true);
         polygons.push_back(p);
     }
     cv::Mat poly = cv::Mat::zeros(gray.size(), CV_8UC3);
-    for (size_t i = 0; i < polygons.size(); ++i)
-    {
+    for (size_t i = 0; i < polygons.size(); ++i) {
         cv::Scalar color = cv::Scalar(255, 255, 255);
         cv::drawContours(poly, polygons, i, color, CV_FILLED);
     }
     return poly;
 }
+<<<<<<< HEAD
 
 char analyzeFrame(const VideoFrameRef &frame_depth, const VideoFrameRef &frame_color, Mat &depth_img, Mat &color_img)
 {
     DepthPixel *depth_img_data;
     RGB888Pixel *color_img_data;
+=======
+char analyzeFrame(const VideoFrameRef& frame_depth,const VideoFrameRef& frame_color,Mat& depth_img, Mat& color_img) {
+    DepthPixel* depth_img_data;
+    RGB888Pixel* color_img_data;
+>>>>>>> parent of 035dac7... Semi Round
 
     int w = frame_color.getWidth();
     int h = frame_color.getHeight();
 
-    depth_img = Mat(h, w, CV_16U);////////////////--------------------------------------------test
+    depth_img = Mat(h, w, CV_16U);
     color_img = Mat(h, w, CV_8UC3);
     Mat depth_img_8u;
+	
 
-    depth_img_data = (DepthPixel *)frame_depth.getData();
+            depth_img_data = (DepthPixel*)frame_depth.getData();
 
-    memcpy(depth_img.data, depth_img_data, h * w * sizeof(DepthPixel));
+            memcpy(depth_img.data, depth_img_data, h*w*sizeof(DepthPixel));
 
-    normalize(depth_img, depth_img_8u, 255, 0, NORM_MINMAX);
+            normalize(depth_img, depth_img_8u, 255, 0, NORM_MINMAX);
 
-    depth_img_8u.convertTo(depth_img_8u, CV_8U);
-    color_img_data = (RGB888Pixel *)frame_color.getData();
+            depth_img_8u.convertTo(depth_img_8u, CV_8U);
+            color_img_data = (RGB888Pixel*)frame_color.getData();
 
-    memcpy(color_img.data, color_img_data, h * w * sizeof(RGB888Pixel));
+            memcpy(color_img.data, color_img_data, h*w*sizeof(RGB888Pixel));
 
-    cvtColor(color_img, color_img, COLOR_RGB2BGR);
-
-    return 'c';
+            cvtColor(color_img, color_img, COLOR_RGB2BGR);
+		
+            return 'c';
 }
 
 /// Return angle between veritcal line containing car and destination point in degree
-double getTheta(Point car, Point dst)
-{
-    if (dst.x == car.x)
-        return 0;
-    if (dst.y == car.y)
-        return (dst.x < car.x ? -90 : 90);
+double getTheta(Point car, Point dst) {
+    if (dst.x == car.x) return 0;
+    if (dst.y == car.y) return (dst.x < car.x ? -90 : 90);
     double pi = acos(-1.0);
     double dx = dst.x - car.x;
     double dy = car.y - dst.y; // image coordinates system: car.y > dst.y
-    if (dx < 0)
-        return -atan(-dx / dy) * 180 / pi;
+    if (dx < 0) return -atan(-dx / dy) * 180 / pi;
     return atan(dx / dy) * 180 / pi;
 }
 
+<<<<<<< HEAD
 /////// My function
 cv::Mat filterLane(const cv::Mat &imgLane, bool &pop, Point &point, int check, bool &preState)
 {
@@ -358,56 +358,50 @@ void controlTurn(PCA9685 *&pca9685, int dir)
 
 //////////////////////////////////////
 
+=======
+>>>>>>> parent of 035dac7... Semi Round
 ///////// utilitie functions  ///////////////////////////
 
-int main(int argc, char *argv[])
-{
-    pthread_t newThread;
-    //pthread_create(&newThread, NULL, &detectSign, NULL);
-    //imshow("dnjdcnd", colorImg);
+int main( int argc, char* argv[] ) {
     GPIO *gpio = new GPIO();
     int sw1_stat = 1;
-    int sw2_stat = 1;
-    int sw3_stat = 1;
-    int sw4_stat = 1;
-    int sensor = 0;
-
-    // Setup input
-    gpio->gpioExport(SW1_PIN);
-    gpio->gpioExport(SW2_PIN);
-    gpio->gpioExport(SW3_PIN);
-    gpio->gpioExport(SW4_PIN);
-    gpio->gpioExport(SENSOR);
-
-    gpio->gpioSetDirection(SW1_PIN, INPUT);
-    gpio->gpioSetDirection(SW2_PIN, INPUT);
-    gpio->gpioSetDirection(SW3_PIN, INPUT);
-    gpio->gpioSetDirection(SW4_PIN, INPUT);
-    gpio->gpioSetDirection(SENSOR, INPUT);
+	int sw2_stat = 1;
+	int sw3_stat = 1;
+	int sw4_stat = 1;
+	int sensor = 0;
+	
+	// Setup input
+	gpio->gpioExport(SW1_PIN);
+	gpio->gpioExport(SW2_PIN);
+	gpio->gpioExport(SW3_PIN);
+	gpio->gpioExport(SW4_PIN);
+	gpio->gpioExport(SENSOR);
+	
+	gpio->gpioSetDirection(SW1_PIN, INPUT);
+	gpio->gpioSetDirection(SW2_PIN, INPUT);
+	gpio->gpioSetDirection(SW3_PIN, INPUT);
+	gpio->gpioSetDirection(SW4_PIN, INPUT);
+	gpio->gpioSetDirection(SENSOR, INPUT);
     usleep(10000);
-
-    /// Init openNI ///
+    
+/// Init openNI ///
     Status rc;
     Device device;
 
     VideoStream depth, color;
     rc = OpenNI::initialize();
-    if (rc != STATUS_OK)
-    {
+    if (rc != STATUS_OK) {
         printf("Initialize failed\n%s\n", OpenNI::getExtendedError());
         return 0;
     }
     rc = device.open(ANY_DEVICE);
-    if (rc != STATUS_OK)
-    {
+    if (rc != STATUS_OK) {
         printf("Couldn't open device\n%s\n", OpenNI::getExtendedError());
         return 0;
     }
-    if (device.getSensorInfo(SENSOR_DEPTH) != NULL)
-    {
+    if (device.getSensorInfo(SENSOR_DEPTH) != NULL) {
         rc = depth.create(device, SENSOR_DEPTH);
-        if (rc == STATUS_OK)
-        {
+        if (rc == STATUS_OK) {
             VideoMode depth_mode = depth.getVideoMode();
             depth_mode.setFps(30);
             depth_mode.setResolution(VIDEO_FRAME_WIDTH, VIDEO_FRAME_HEIGHT);
@@ -415,22 +409,18 @@ int main(int argc, char *argv[])
             depth.setVideoMode(depth_mode);
 
             rc = depth.start();
-            if (rc != STATUS_OK)
-            {
+            if (rc != STATUS_OK) {
                 printf("Couldn't start the color stream\n%s\n", OpenNI::getExtendedError());
             }
         }
-        else
-        {
+        else {
             printf("Couldn't create depth stream\n%s\n", OpenNI::getExtendedError());
         }
     }
 
-    if (device.getSensorInfo(SENSOR_COLOR) != NULL)
-    {
+    if (device.getSensorInfo(SENSOR_COLOR) != NULL) {
         rc = color.create(device, SENSOR_COLOR);
-        if (rc == STATUS_OK)
-        {
+        if (rc == STATUS_OK) {
             VideoMode color_mode = color.getVideoMode();
             color_mode.setFps(30);
             color_mode.setResolution(VIDEO_FRAME_WIDTH, VIDEO_FRAME_HEIGHT);
@@ -443,41 +433,39 @@ int main(int argc, char *argv[])
                 printf("Couldn't start the color stream\n%s\n", OpenNI::getExtendedError());
             }
         }
-        else
-        {
+        else {
             printf("Couldn't create color stream\n%s\n", OpenNI::getExtendedError());
         }
     }
-
-    VideoFrameRef frame_depth, frame_color;
-    VideoStream *streams[] = {&depth, &color};
-    /// End of openNI init phase ///
-
-    /// Init video writer and log files ///
-    bool is_save_file = true; // set is_save_file = true if you want to log video and i2c pwm coeffs.
-    VideoWriter depth_videoWriter;
+    
+  VideoFrameRef frame_depth, frame_color;
+    VideoStream* streams[] = {&depth, &color};
+/// End of openNI init phase ///
+    
+/// Init video writer and log files ///   
+    bool is_save_file = false; // set is_save_file = true if you want to log video and i2c pwm coeffs.
+    VideoWriter depth_videoWriter;	
     VideoWriter color_videoWriter;
     VideoWriter gray_videoWriter;
-
+     
     string gray_filename = "gray.avi";
-    string color_filename = "color.avi";
-    string depth_filename = "depth.avi";
-
-    Mat depthImg, grayImage;
-    int codec = CV_FOURCC('M', 'J', 'P', 'G');
-    int video_frame_width = VIDEO_FRAME_WIDTH;
+	string color_filename = "color.avi";
+	string depth_filename = "depth.avi";
+	
+	Mat depthImg, colorImg, grayImage;
+	int codec = CV_FOURCC('D','I','V', 'X');
+	int video_frame_width = VIDEO_FRAME_WIDTH;
     int video_frame_height = VIDEO_FRAME_HEIGHT;
-    Size output_size(video_frame_width, video_frame_height);
+	Size output_size(video_frame_width, video_frame_height);
 
-    FILE *thetaLogFile; // File creates log of signal send to pwm control
-    if (is_save_file)
-    {
-        gray_videoWriter.open(gray_filename, codec, 8, output_size, false);
+   	FILE *thetaLogFile; // File creates log of signal send to pwm control
+	if(is_save_file) {
+	    gray_videoWriter.open(gray_filename, codec, 8, output_size, false);
         color_videoWriter.open(color_filename, codec, 8, output_size, true);
-        depth_videoWriter.open(depth_filename, codec, 8, output_size, false);
+        //depth_videoWriter.open(depth_filename, codec, 8, output_size, false);
         thetaLogFile = fopen("thetaLog.txt", "w");
-    }
-    /// End of init logs phase ///
+	}
+/// End of init logs phase ///
 
     int dir = 0, throttle_val = 0;
     double theta = 0;
@@ -488,27 +476,27 @@ int main(int argc, char *argv[])
 
     ////////  Init PCA9685 driver   ///////////////////////////////////////////
 
-    api_pwm_pca9685_init(pca9685);
+    PCA9685 *pca9685 = new PCA9685() ;
+    api_pwm_pca9685_init( pca9685 );
 
     if (pca9685->error >= 0)
-        // api_pwm_set_control( pca9685, dir, throttle_val, theta, current_state );
-        api_set_FORWARD_control(pca9685, throttle_val);
+       // api_pwm_set_control( pca9685, dir, throttle_val, theta, current_state );
+        api_set_FORWARD_control( pca9685,throttle_val);
     /////////  Init UART here   ///////////////////////////////////////////////
     /// Init MSAC vanishing point library
     MSAC msac;
-    cv::Rect roi1 = cv::Rect(0, VIDEO_FRAME_HEIGHT * 3 / 4,
-                             VIDEO_FRAME_WIDTH, VIDEO_FRAME_HEIGHT / 4);
+    cv::Rect roi1 = cv::Rect(0, VIDEO_FRAME_HEIGHT*3/4,
+                            VIDEO_FRAME_WIDTH, VIDEO_FRAME_HEIGHT/4);
 
-    api_vanishing_point_init(msac);
+    api_vanishing_point_init( msac );
 
     ////////  Init direction and ESC speed  ///////////////////////////
+    int set_throttle_val = 0;
     throttle_val = 0;
     theta = 0;
-
+    
     // Argc == 2 eg ./test-autocar 27 means initial throttle is 27
-    if (argc == 2)
-        set_throttle_val = atoi(argv[1]);
-	throttle_config = set_throttle_val;
+    if(argc == 2 ) set_throttle_val = atoi(argv[1]);
     fprintf(stderr, "Initial throttle: %d\n", set_throttle_val);
     int frame_width = VIDEO_FRAME_WIDTH;
     int frame_height = VIDEO_FRAME_HEIGHT;
@@ -520,9 +508,11 @@ int main(int argc, char *argv[])
     double st = 0, et = 0, fps = 0;
     double freq = getTickFrequency();
 
+
     bool is_show_cam = true;
-    int count_s, count_ss;
+	int count_s,count_ss;
     int frame_id = 0;
+<<<<<<< HEAD
     vector<cv::Vec4i> lines;
     bool oneLine = false;
     int preX = 0;
@@ -575,459 +565,166 @@ int main(int argc, char *argv[])
     while (true)
     {
         Point center_point(0, 0);
+=======
+	vector<cv::Vec4i> lines;
+    while ( true )
+    { 
+        Point center_point(0,0);
+>>>>>>> parent of 035dac7... Semi Round
 
         st = getTickCount();
         key = getkey();
-        unsigned int bt_status = 0;
-        gpio->gpioGetValue(SW4_PIN, &bt_status);
-	unsigned int sensor_status = 0;
-	gpio->gpioGetValue(SENSOR, &sensor_status);
-	cout << "sensor: " << sensor_status << endl;
-        if (!bt_status)
-        {
-            if (bt_status != sw4_stat)
-            {
-                running = !running;
-                sw4_stat = bt_status;
-                throttle_val = 37;
-		set_throttle_val = 37;
-		road_width_set = false;
-		oneLine = false;
-            }
-        }
-        else
-            sw4_stat = bt_status;
-	
-
-	gpio->gpioGetValue(SW1_PIN, &bt_status);
-	if (!bt_status)
-        {
-            if (bt_status != sw1_stat)
-            {
-                running = !running;
-                sw1_stat = bt_status;
-                throttle_val = 40;
-		set_throttle_val = 40;
-		road_width_set = false;
-		oneLine = false;
-            }
-        }
-        else
-            sw1_stat = bt_status;
-	if(sensor==0 && sensor_status==1){
-		running = true;
-		throttle_val = set_throttle_val;
-		road_width_set = false;
-		oneLine = false;
-	}
-	sensor = sensor_status;
-        if (key == 's')
-        {
+       unsigned int bt_status = 0;
+		gpio->gpioGetValue(SW4_PIN, &bt_status);
+		if (!bt_status) {
+			if (bt_status != sw4_stat) {
+				running = !running;
+				sw4_stat = bt_status;
+				throttle_val = set_throttle_val;
+			}
+		} else sw4_stat = bt_status;
+        if( key == 's') {
             running = !running;
-            throttle_val = set_throttle_val;
-
-		road_width_set = false;
-		oneLine = false;
+		throttle_val = set_throttle_val;
         }
-        if (key == 'f')
-        {
+        if( key == 'f') {
             fprintf(stderr, "End process.\n");
             theta = 0;
             throttle_val = 0;
-            api_set_FORWARD_control(pca9685, throttle_val);
+	        api_set_FORWARD_control( pca9685,throttle_val);
             break;
         }
 
-        if (running)
+        if( running )
         {
-		cout << "v = " << throttle_val << endl;
-		throttle_val = set_throttle_val;
-            //// Check PCA9685 driver ////////////////////////////////////////////
+			//// Check PCA9685 driver ////////////////////////////////////////////
             if (pca9685->error < 0)
             {
-                cout << endl
-                     << "Error: PWM driver" << endl
-                     << flush;
+                cout<< endl<< "Error: PWM driver"<< endl<< flush;
                 break;
             }
-            if (!started)
-            {
-                fprintf(stderr, "ON\n");
-                started = true;
-                stopped = false;
-                throttle_val = set_throttle_val;
-                api_set_FORWARD_control(pca9685, throttle_val);
-            }
+			if (!started)
+			{
+    			fprintf(stderr, "ON\n");
+			    started = true; stopped = false;
+				throttle_val = set_throttle_val;
+                api_set_FORWARD_control( pca9685,throttle_val);
+			}
             int readyStream = -1;
-            rc = OpenNI::waitForAnyStream(streams, 2, &readyStream, SAMPLE_READ_WAIT_TIMEOUT);
-            if (rc != STATUS_OK)
-            {
-                printf("Wait failed! (timeout is %d ms)\n%s\n", SAMPLE_READ_WAIT_TIMEOUT, OpenNI::getExtendedError());
-                break;
-            }
+		    rc = OpenNI::waitForAnyStream(streams, 2, &readyStream, SAMPLE_READ_WAIT_TIMEOUT);
+		    if (rc != STATUS_OK)
+		    {
+		        printf("Wait failed! (timeout is %d ms)\n%s\n", SAMPLE_READ_WAIT_TIMEOUT, OpenNI::getExtendedError());
+		        break;
+		    }
 
-            depth.readFrame(&frame_depth);
-            color.readFrame(&frame_color);
-
-            frame_id++;
-            char recordStatus = analyzeFrame(frame_depth, frame_color, depthImg, colorImg);
-            //flip(depthImg, depthImg, 1);
-            flip(colorImg, colorImg, 1);
-            //cv::imshow("depth", depthImg);
+		depth.readFrame(&frame_depth);
+		color.readFrame(&frame_color);
+            	frame_id ++;
+		char recordStatus = analyzeFrame(frame_depth,frame_color, depthImg, colorImg);
+		flip(depthImg, depthImg, 1);
+		flip(colorImg, colorImg, 1);
+		
             ////////// Detect Center Point ////////////////////////////////////
-            if (recordStatus == 'c')
-            {
-
-
-
-//////////////////////////////////////////////////////////////-------------------------------- ------------------------------------test 
-// ngannnnn
-    DepthPixel *depth_img_data;
-    RGB888Pixel *color_img_data;
-
-    int w = frame_color.getWidth();
-    int h = frame_color.getHeight();
-
-    Mat depth_img = Mat(h, w, CV_16U);////////////////------------------------------------------------------------------------------------------test
-    //color_img = Mat(h, w, CV_8UC3);
-    Mat depth_img_8u;
-
-    depth_img_data = (DepthPixel *)frame_depth.getData();
-
-    memcpy(depth_img.data, depth_img_data, h * w * sizeof(DepthPixel));
-    normalize(depth_img, depth_img_8u, 255, 0, NORM_MINMAX);
-
-    depth_img_8u.convertTo(depth_img_8u, CV_8U);
-    //color_img_data = (RGB888Pixel *)frame_color.getData();
-
-    //memcpy(color_img.data, color_img_data, h * w * sizeof(RGB888Pixel));
-
-    //cvtColor(color_img, color_img, COLOR_RGB2BGR);
-
-
-//////////////////get depth
-		int x_Left, x_Right, y_ob, w_ob;
-                //cv::Mat depth__;
-                //const float scaleFactor = 0.05f;
-	        //depthImg.convertTo(depth__,CV_8UC1, scaleFactor);
-                //cvtColor(depthImg,)
-			//cout << "goi ham get_ob"<<depthImg.channels()<<endl;
-                 //imshow("DepthImg",depthImg);
-                 imshow("Depth__",depth_img_8u);
-		get_obtacle(depth_img_8u, x_Left,x_Right,y_ob,w_ob);
-		
-		//PointCenter_Displacement( xTam, x_Left, x_Right);
-		//cout << "x_Left"<<x_Left <<endl<<"x_Right"<<x_Right;
-		
-			
-
-
-
-///////////////////////--------------------------------------------------------------------------------------------------------
-
-
-                // if(endThread){
-                //     endThread = false;
-                //     std::thread first(detectSign);
-                // }
-                // if (endThread)
-                // {
-                //     endThread = false;
-                //     pthread_create(&newThread, NULL, &detectSign, NULL);
-                // }
-		//if(test_obt){
-			//cout << "reach here====================================================" << endl;
-		Rect detectRoi(colorImg.cols/5,colorImg.rows/4,3*colorImg.cols/5,3*colorImg.rows/4);
-            Mat img = colorImg(detectRoi);
-            resize(img, img, cv::Size(FRAME_HEIGHT, FRAME_WIDTH));
-            //imshow("img", img);
-            int class_id = api_sign_detection(img, sr);
-            if (class_id != NO_SIGN)
-            {
-                if (class_id == SIGN_LEFT)
-                    detectLeft++;
-                if (class_id == SIGN_RIGHT)
-                    detectRight++;
-            }
-            countDetect++;
-            if (countDetect >= N_SAMPLE)
-            {
-		throttle_val = set_throttle_val;
-		api_set_FORWARD_control(pca9685, throttle_val);
-                if (detectLeft >= ACCEPT_SIGN)
-                {
-                    flagTurn = true;
-                    dirTurn = SIGN_LEFT;
-                    //controlTurn(pca9685, SIGN_LEFT);
-                }
-                else if (detectRight >= ACCEPT_SIGN)
-                {
-                    flagTurn = true;
-                    dirTurn = SIGN_RIGHT;
-                    //controlTurn(pca9685, SIGN_RIGHT);
-                }
-                countDetect = 0;
-                detectRight = 0;
-                detectLeft = 0;
-            }
-            preDetect = class_id;
-
-                getFrame = true;
-                if (flagTurn)
-                {
-                    controlTurn(pca9685, dirTurn);
-                    //fprintf(thetaLogFile, "turn: %d\n", dirTurn);
-                    if (dirTurn == SIGN_LEFT)
-                        putText(colorImg, "Turn Left", Point(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(255, 0, 0), 1, CV_AA);
-                    else
-                        putText(colorImg, "Turn Right", Point(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(255, 0, 0), 1, CV_AA);
-                    flagTurn = false;
-			continue;
-                }
-
-		/*Mat imgHSV;
-		cvtColor(img, imgHSV, COLOR_BGR2HSV);
-
-		Mat imgThresholded;
-		
-		inRange(imgHSV, GREEN_MIN, GREEN_MAX, imgThresholded); //Threshold the image
-		erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-		dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-		dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-		erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-
-		Moments oMoments = moments(imgThresholded);
-		
-		double dM01 = oMoments.m01;
-		double dM10 = oMoments.m10;
-		double dArea = oMoments.m00;
-		
-		bool has_obs = false;
-		int obs_x = 0;
-		int obs_y = 0;
-		
-		if(dArea > AREA_MIN) {
-			 obs_x = dM10/dArea;
-			obs_y = dM01/dArea;
-			has_obs = true;
-		}*/
-	//}
+            if (recordStatus == 'c') {
                 cvtColor(colorImg, grayImage, CV_BGR2GRAY);
-                cv::imshow("IMG", colorImg);
-                cout << "reach imshow" << endl;
-                GaussianBlur(grayImage, grayImage, Size(5, 5), 0, 0);
-                Rect crop1(0, 0, grayImage.cols / 2 - OFFSET_DIVIDE, grayImage.rows);
-                Mat Left = grayImage(crop1);
-                cv::Rect crop2(grayImage.cols / 2 + OFFSET_DIVIDE, 0, grayImage.cols / 2 - OFFSET_DIVIDE, grayImage.rows);
-                cv::Mat Right = grayImage(crop2);
-                if (is_show_cam)
-                {
-                    //imshow("LEFT",Left);
-                    //imshow("RIGHT",Right);
-                }
-                Mat dstLeft = keepLanes(Left, false);
-                Mat dstRight = keepLanes(Right, false);
-                //cv::Mat dst = keepLanes(grayImage, false);
-                //cv::imshow("dst", dst);
-                bool isLeft = false;
-                bool isRight = false;
-                Point pointLeft(0, 0);
-                Left = filterLane(dstLeft, isLeft, pointLeft, -1, preLeft);
-                pointLeft.y += 3 * grayImage.rows / 4;
-                Point pointRight(0, 0);
-                Right = filterLane(dstRight, isRight, pointRight, 1, preRight);
-                pointRight.x += (grayImage.cols / 2 + OFFSET_DIVIDE);
-                pointRight.y += 3 * grayImage.rows / 4;
-                //circle(grayImage, pointRight, 2, Scalar(255, 0, 255), 3);
-                //circle(grayImage, pointLeft, 2, Scalar(255, 0, 255), 3);
-                preLeft = isLeft;
-                preRight = isRight;
-                imshow("LEFT", Left);
-                imshow("RIGHT", Right);
-                //cv::Point shift(0, 3 * grayImage.rows / 4);
-                //bool isRight = true;
-                //cv::Mat two = twoRightMostLanes(grayImage.size(), dst, shift, isRight);
-                //cv::imshow("two", two);
-                //Rect roi2(0, 3 * two.rows / 4, two.cols, two.rows / 4); //c?t ?nh
-
-                //Mat imgROI2 = two(roi2);
-                //cv::imshow("roi", imgROI2);
-                //int widthSrc = imgROI2.cols;
-                //int heightSrc = imgROI2.rows;
-                //vector<Point> pointList;
-                //for (int y = 0; y < heightSrc; y++)
-                //{
-                // for (int x = widthSrc; x >= 0; x--)
-                // {
-                //     if (imgROI2.at<uchar>(25, x) == 255)
-                //     {
-                //         pointList.push_back(Point(25, x));
-                //         //break;
-                //     }
-                //     if (pointList.size() == 0)
-                //     {
-
-                //         pointList.push_back(Point(20, 300));
-                //     }
-                // }
-                //}
-                // std::cout << "size" << pointList.size() << std::endl;
-                // int x = 0, y = 0;
-                int xTam = 0, yTam = 0;
-                // for (int i = 0; i < pointList.size(); i++)
-                // {
-                //     x = x + pointList.at(i).y;
-                //     y = y + pointList.at(i).x;
-                // }
-                // xTam = (x / pointList.size());
-                // yTam = (y / pointList.size());
-                // xTam = xTam;
-                // if (pointList.size() <= 15 && pointList.size() > 1)
-                //     xTam = xTam - 70;
-                // yTam = yTam + 240 * 3 / 4;
-                double angDiff = 0;
-                cout << "Left: " << isLeft << " Right: " << isRight << endl;
-                /*if (isLeft && isRight)
-                {
-                    oneLine = false;
-                    xTam = (pointLeft.x + pointRight.x) / 2;
-                    yTam = (pointLeft.y + pointRight.y) / 2;
-                }
-                else if (isLeft && (!oneLine))
-                {
-                    oneLine = true;
-                    xTam = grayImage.cols / 2 + 150;
-                    yTam = 7 * grayImage.rows / 8;
-                    //std::cout << "angdiff: " << angDiff << std::endl;
-                    // theta = (0.00);
-                    //api_set_STEERING_control(pca9685, theta);
-                }
-                else if (isRight && (!oneLine))
-                {
-                    //oneLine = true;
-                    xTam = grayImage.cols / 2 - 150;
-                    yTam = 7 * grayImage.rows / 8;
-                }
-                else
-                {
-                    //oneLine = false;
-                    xTam = preX;
-                    yTam = preY;
-                }*/
- 		if (isLeft && isRight)
-                {
-                    oneLine = false;
-                    xTam = (pointLeft.x + pointRight.x) / 2;
-                    yTam = (pointLeft.y + pointRight.y) / 2;
-                    if(road_width_set) {
-                        road_width = (road_width + pointRight.x - pointLeft.x)/2;
-                    }
-                    else {
-                        road_width = pointRight.x - pointLeft.x;
-                        road_width_set = true;                    
-                    }
-                }
-                else if (isLeft)
-                {
-			putText(colorImg, "one left", Point(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(255, 0, 0), 1, CV_AA);
-                    oneLine = true;
-                    xTam = pointLeft.x + road_width *2/3; // grayImage.cols / 2 + 150;
-                    yTam = preY;
-                    //std::cout << "angdiff: " << angDiff << std::endl;
-                    // theta = (0.00);
-                    //api_set_STEERING_control(pca9685, theta);
-                }
-                else if (isRight)
-                {
-			putText(colorImg, "one right", Point(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(255, 0, 0), 1, CV_AA);
-                    oneLine = true;
-                    xTam = pointRight.x - road_width *2/3;// grayImage.cols / 2 - 150;
-                    yTam = preY;
-                }
-                else
-                {
-                    //oneLine = false;
-                    xTam = preX;
-                    yTam = preY;
-                }
-
-
-		/*if(has_obs) {
-			if(obs_x > xTam && obs_x - xTam <= road_width/4) {
-				xTam -= road_width/4;	
-			}
-			else if(obs_x <= xTam && xTam - obs_x <= road_width/4) {
-				xTam += road_width/4;	
-			}
-		}*/
-
-                preX = xTam;
-                preY = yTam;
+                cv::Mat dst = keepLanes(grayImage, false);
+                // cv::imshow("dst", dst);
+                cv::Point shift (0, 3 * grayImage.rows / 4);
+                bool isRight = true;
+                cv::Mat two = twoRightMostLanes(grayImage.size(), dst, shift, isRight);
+                // cv::imshow("two", two);
+		Rect roi2(0,   3*two.rows / 4, two.cols, two.rows / 4); //c?t ?nh
+		
+		Mat imgROI2 = two(roi2);
+		// cv::imshow("roi", imgROI2);
+		int widthSrc = imgROI2.cols;
+		int heightSrc = imgROI2.rows;
+		vector<Point> pointList;
+			//for (int y = 0; y < heightSrc; y++)
+			//{
+				for (int x = widthSrc; x >= 0; x--)
+				{
+					if (imgROI2.at<uchar>(25, x) == 255 )
+					{
+						pointList.push_back(Point(25, x));
+						//break;
+					}
+					if(pointList.size() == 0){
 	
 
-/////////////////////////////////////////////////////////////////////
-                angDiff = getTheta(carPosition, Point(xTam, yTam));
-                if (-20 < angDiff && angDiff < 20)
-                    angDiff = 0;
-                theta = -(angDiff * ALPHA);
-                circle(grayImage, Point(xTam, yTam), 2, Scalar(255, 255, 0), 3);
-                circle(colorImg, Point(xTam, yTam), 2, Scalar(255, 255, 0), 3);
-                std::cout << "angdiff: " << angDiff << std::endl;
-                // theta = (0.00);
-                api_set_STEERING_control(pca9685, theta);
-                // if (center_point.x == 0 && center_point.y == 0)
-                // {
-                //     // modified here: Khong thay duong -> dung
-                //     // previous: Khong thay duong -> dung tam duong cu
-                //     center_point = prvPosition;
-                //     //api_set_STEERING_control(pca9685, 0);
-                //     //			api_set_FORWARD_control(pca9685, 0);
-
-                //     // break;
-                // }
-                // prvPosition = center_point;
+							pointList.push_back(Point(20, 300));
+							}
+				
+				}
+			//}
+			std::cout<<"size"<<pointList.size()<<std::endl;
+			int x = 0, y = 0;
+			int xTam = 0, yTam = 0;
+			for (int i = 0; i < pointList.size(); i++)
+				{
+					x = x + pointList.at(i).y;
+					y = y + pointList.at(i).x;
+				}
+			xTam = (x / pointList.size());
+			yTam = (y / pointList.size());
+			xTam = xTam ;
+			if(pointList.size()<=15&&pointList.size()>1)xTam = xTam - 70;
+			yTam = yTam + 240 * 3 / 4;
+			circle(grayImage, Point(xTam, yTam), 2, Scalar(255, 255, 0), 3);
+                if (center_point.x == 0 && center_point.y == 0) {
+			// modified here: Khong thay duong -> dung
+			// previous: Khong thay duong -> dung tam duong cu
+			center_point = prvPosition;
+			//api_set_STEERING_control(pca9685, 0);
+//			api_set_FORWARD_control(pca9685, 0);
+			
+			// break;
+		}
+                prvPosition = center_point;
+                double angDiff = getTheta(carPosition, Point(xTam, yTam));
+		if(-20<angDiff&&angDiff<20)angDiff=0;
+                theta = (angDiff*0.8);
+		std::cout<<"angdiff"<<angDiff<<std::endl;
+		       // theta = (0.00);
+		        api_set_STEERING_control(pca9685,theta);
             }
-
-            int pwm2 = api_set_FORWARD_control(pca9685, throttle_val);
+			
+            int pwm2 =  api_set_FORWARD_control( pca9685,throttle_val);
             et = getTickCount();
-            fps = 1.0 / ((et - st) / freq);
-            cerr << "FPS: " << fps << '\n';
+            fps = 1.0 / ((et-st)/freq);
+            cerr << "FPS: "<< fps<< '\n';
 
-            if (recordStatus == 'c' && is_save_file)
-            {
+            if (recordStatus == 'c' && is_save_file) {
                 // 'Center': target point
                 // pwm2: STEERING coefficient that pwm at channel 2 (our steering wheel's channel)
                 fprintf(thetaLogFile, "Center: [%d, %d]\n", center_point.x, center_point.y);
                 fprintf(thetaLogFile, "pwm2: %d\n", pwm2);
-
+                
                 if (!colorImg.empty())
-                    color_videoWriter.write(colorImg);
-                if (!grayImage.empty())
-                    gray_videoWriter.write(grayImage);
+			        color_videoWriter.write(colorImg);
+			    if (!grayImage.empty())
+			        gray_videoWriter.write(grayImage); 
             }
-            if (recordStatus == 'd' && is_save_file)
-            {
-                //if (!depthImg.empty())
-                //depth_videoWriter.write(depthImg);
+            if (recordStatus == 'd' && is_save_file) {
+                if (!depthImg.empty())
+                   depth_videoWriter.write(depthImg);
             }
 
             //////// using for debug stuff  ///////////////////////////////////
-            if (is_show_cam)
-            {
-                if (!grayImage.empty())
-                    imshow("gray", grayImage);
-                waitKey(1);
+            if(is_show_cam) {
+                if(!grayImage.empty())
+                    imshow( "gray", grayImage );
+                waitKey(10);
             }
-            //if (key == 27)
-            //    break;
+            if( key == 27 ) break;
         }
-        else
-        {
-            theta = 0;
+        else {
+			theta = 0;
             throttle_val = 0;
-            if (!stopped)
-            {
+            if (!stopped) {
                 fprintf(stderr, "OFF\n");
+<<<<<<< HEAD
                 stopped = true;
                 started = false;
             }
@@ -1036,16 +733,23 @@ int main(int argc, char *argv[])
                 started = false;
             }
             api_set_FORWARD_control(pca9685, throttle_val);
+=======
+                stopped = true; started = false;
+			}
+			api_set_FORWARD_control( pca9685,throttle_val);
+>>>>>>> parent of 035dac7... Semi Round
             sleep(1);
         }
     }
     //////////  Release //////////////////////////////////////////////////////
-    if (is_save_file)
+	if(is_save_file)
     {
         gray_videoWriter.release();
         color_videoWriter.release();
-        depth_videoWriter.release();
+        //depth_videoWriter.release();
         fclose(thetaLogFile);
-    }
+	}
     return 0;
 }
+
+

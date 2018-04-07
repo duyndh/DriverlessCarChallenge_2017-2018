@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectDetection/SignDetection.cpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectDetection/SignDetection.cpp
 SignDetection.h
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectDetection/SignDetection.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectDetection/SignDetection.h
 
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectDetection/SignDetection.h
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectDetection/SignDetection.h
 iostream
 -
 vector
@@ -22,11 +22,11 @@ cmath
 cstdio
 -
 opencv2/videoio.hpp
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectDetection/opencv2/videoio.hpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectDetection/opencv2/videoio.hpp
 opencv2/highgui.hpp
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectDetection/opencv2/highgui.hpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectDetection/opencv2/highgui.hpp
 opencv2/imgproc.hpp
-/home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectDetection/opencv2/imgproc.hpp
+/home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectDetection/opencv2/imgproc.hpp
 
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h

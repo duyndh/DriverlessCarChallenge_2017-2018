@@ -1,4 +1,4 @@
-# Install script for directory: /home/ubuntu/DriverlessCarChallenge_2017-2018/example/peripheral_driver/uart
+# Install script for directory: /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/peripheral_driver/uart
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

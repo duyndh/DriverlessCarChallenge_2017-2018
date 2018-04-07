@@ -141,7 +141,6 @@ int main( int argc, char* argv[] ) {
 		gpio->gpioGetValue(SENSOR, &sensor_status);
 		//std::cout<<sensor_status<<std::endl;
 		if (!bt_status) {
-			lcd->LCDPrintStr("RUNNING");
 			if (bt_status != sw4_stat) {
 				running = !running;
 				sw4_stat = bt_status;

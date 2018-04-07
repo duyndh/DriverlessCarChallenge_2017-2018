@@ -42,10 +42,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ubuntu/DriverlessCarChallenge_2017-2018/example
+CMAKE_SOURCE_DIR = /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ubuntu/DriverlessCarChallenge_2017-2018/example
+CMAKE_BINARY_DIR = /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -72,14 +72,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/DriverlessCarChallenge_2017-2018/example/CMakeFiles /home/ubuntu/DriverlessCarChallenge_2017-2018/example/ObjectDetection/CMakeFiles/progress.marks
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/DriverlessCarChallenge_2017-2018/example/CMakeFiles 0
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/CMakeFiles /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/ObjectDetection/CMakeFiles/progress.marks
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/clean
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/clean
 .PHONY : clean
 
 # The main clean target
@@ -88,22 +88,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/preinstall
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/preinstall
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 ObjectDetection/CMakeFiles/ObjectDetection.dir/rule:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/CMakeFiles/ObjectDetection.dir/rule
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f CMakeFiles/Makefile2 ObjectDetection/CMakeFiles/ObjectDetection.dir/rule
 .PHONY : ObjectDetection/CMakeFiles/ObjectDetection.dir/rule
 
 # Convenience name for target.
@@ -112,7 +112,7 @@ ObjectDetection: ObjectDetection/CMakeFiles/ObjectDetection.dir/rule
 
 # fast build rule for target.
 ObjectDetection/fast:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f ObjectDetection/CMakeFiles/ObjectDetection.dir/build.make ObjectDetection/CMakeFiles/ObjectDetection.dir/build
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f ObjectDetection/CMakeFiles/ObjectDetection.dir/build.make ObjectDetection/CMakeFiles/ObjectDetection.dir/build
 .PHONY : ObjectDetection/fast
 
 SignDetection.o: SignDetection.cpp.o
@@ -120,7 +120,7 @@ SignDetection.o: SignDetection.cpp.o
 
 # target to build an object file
 SignDetection.cpp.o:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f ObjectDetection/CMakeFiles/ObjectDetection.dir/build.make ObjectDetection/CMakeFiles/ObjectDetection.dir/SignDetection.cpp.o
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f ObjectDetection/CMakeFiles/ObjectDetection.dir/build.make ObjectDetection/CMakeFiles/ObjectDetection.dir/SignDetection.cpp.o
 .PHONY : SignDetection.cpp.o
 
 SignDetection.i: SignDetection.cpp.i
@@ -128,7 +128,7 @@ SignDetection.i: SignDetection.cpp.i
 
 # target to preprocess a source file
 SignDetection.cpp.i:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f ObjectDetection/CMakeFiles/ObjectDetection.dir/build.make ObjectDetection/CMakeFiles/ObjectDetection.dir/SignDetection.cpp.i
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f ObjectDetection/CMakeFiles/ObjectDetection.dir/build.make ObjectDetection/CMakeFiles/ObjectDetection.dir/SignDetection.cpp.i
 .PHONY : SignDetection.cpp.i
 
 SignDetection.s: SignDetection.cpp.s
@@ -136,7 +136,7 @@ SignDetection.s: SignDetection.cpp.s
 
 # target to generate assembly for a file
 SignDetection.cpp.s:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(MAKE) -f ObjectDetection/CMakeFiles/ObjectDetection.dir/build.make ObjectDetection/CMakeFiles/ObjectDetection.dir/SignDetection.cpp.s
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(MAKE) -f ObjectDetection/CMakeFiles/ObjectDetection.dir/build.make ObjectDetection/CMakeFiles/ObjectDetection.dir/SignDetection.cpp.s
 .PHONY : SignDetection.cpp.s
 
 # Help Target
@@ -162,6 +162,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/ubuntu/DriverlessCarChallenge_2017-2018/example && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/ubuntu/DriverlessCarChallenge_2017-2018-master/example && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

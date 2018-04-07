@@ -157,16 +157,16 @@ truncate(Mat &src, Mat &dst,
 }
 
 
-bool
+void
 api_kinect_cv_get_obtacle_rect( Mat& depthMap,
                                 vector< Rect > &output_boxes,
                                 Rect &roi,
                                 int lower_bound,
-                                int upper_bound)
+                                int upper_bound
+                           )
 {
 
-    int thresh_area_min = 300;
-	int thresh_area_max = 400;
+    int thresh_area = 200;
 
     int erosion_type = MORPH_ELLIPSE;
     int erosion_size = 1;
@@ -198,23 +198,19 @@ api_kinect_cv_get_obtacle_rect( Mat& depthMap,
     vector<vector<Point> > contours_poly( contours.size() );
     vector<Rect> boundRect1( contours.size() );
     vector<Rect> boundRect2;
-	//vector<vector<Point> > contourMax =contours[0];
-	
 
     for( int i = 0; i < contours.size(); i++ )
     {
-	//if (contourMax.area() < countours[i]) contourMax = contours[i];
         approxPolyDP( Mat(contours[i]), contours_poly[i], 3, true );
         boundRect1[i] = boundingRect( Mat(contours_poly[i]) );
     }
 
     Mat binImg1 = Mat::zeros(depthMap.size(), CV_8UC1);
     Mat binImg2 = Mat::zeros(depthMap.size(), CV_8UC1);
-	
-	Rect boundRectMax = boundRect1[0];
+
     for( int i = 0; i< contours.size(); i++ )
     {
-        if( (boundRect1[i].area() > thresh_area_min))
+        if( boundRect1[i].area() > thresh_area )
             boundRect2.push_back(boundRect1[i]);
     }
 
@@ -231,11 +227,9 @@ api_kinect_cv_get_obtacle_rect( Mat& depthMap,
 
     for( int i = 0; i< tmp_outputBoxes.size(); i++ )
     {
-        if( tmp_outputBoxes[i].area() > 1.5*thresh_area_min )
+        if( tmp_outputBoxes[i].area() > 1.5*thresh_area )
             output_boxes.push_back( tmp_outputBoxes[i] + roi.tl());
     }
-if (contours.size() == 0 ) return false;
-	return true;
 }
 
 void
