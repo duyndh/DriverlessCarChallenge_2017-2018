@@ -62,8 +62,9 @@ using namespace EmbeddedFramework;
 enum SIGN_INDEX
 {
     NO_SIGN = 0,
-    SIGN_LEFT = 1,
-    SIGN_RIGHT = 2,
+    SIGN_STOP = 1;
+    SIGN_LEFT = 2,
+    SIGN_RIGHT = 3,
 };
 
 bool flagTurn = false;
@@ -81,158 +82,6 @@ int set_throttle_val = 0;
 int throttle_config = 0;
 bool test_obt= false;
 PCA9685 *pca9685 = new PCA9685();
-
-double median(Mat gray)
-{
-    double sum = 0;
-    int count = 0;
-    for (int i = 0; i < gray.cols; i++)
-        for (int j = 0; j < gray.rows; j++)
-        {
-            count++;
-            sum += gray.at<uchar>(i, j);
-        }
-    return sum / count;
-}
-
-int classify_sign(Mat sign_gray)
-{
-    imshow("sign_gray", sign_gray);
-
-    Mat left_gray = sign_gray(Rect(SIGN_SIZE / 2 / 3,
-                                   SIGN_SIZE / 2,
-                                   SIGN_SIZE / 2 * 2 / 3,
-                                   SIGN_SIZE / 2 * 2 / 3));
-    Mat right_gray = sign_gray(Rect(SIGN_SIZE / 2,
-                                    SIGN_SIZE / 2,
-                                    SIGN_SIZE / 2 * 2 / 3,
-                                    SIGN_SIZE / 2 * 2 / 3));
-    imshow("left", left_gray);
-    imshow("right", right_gray);
-
-    double left_median = median(left_gray);
-    double right_median = median(right_gray);
-
-    if (left_median < right_median)
-        return SIGN_LEFT;
-    else
-        return SIGN_RIGHT;
-}
-
-int recognize_sign(Rect &sign, Mat &gray)
-{
-    if (sign.x == 0 && sign.y == 0 && sign.width == 0 && sign.height == 0)
-        return NO_SIGN;
-
-    Mat sign_gray = gray(sign);
-    resize(sign_gray, sign_gray, cv::Size(SIGN_SIZE, SIGN_SIZE));
-
-    int class_id = classify_sign(sign_gray);
-    return class_id;
-}
-
-
-void ycrcb_equalize(Mat &img)
-{
-	Mat ycrcb;
-	cvtColor(img, ycrcb, CV_BGR2YCrCb);
-
-	vector<Mat> chanels(3);
-
-	split(ycrcb, chanels);
-
-	Ptr<CLAHE> clahe = createCLAHE(2.0, Size(8, 8));
-
-	clahe->apply(chanels[0], chanels[0]);
-
-	merge(chanels, ycrcb);
-
-	cvtColor(ycrcb, img, CV_YCrCb2BGR);
-}
-
-void get_mask(Mat &img, Mat &dst)
-{
-    //GaussianBlur(img, img, Size(KERNEL_SIZE, KERNEL_SIZE), 0);
-	
-    Mat hsv;
-    cvtColor(img, hsv, COLOR_BGR2HSV);
-	//ycrcb_equalize(hsv);
-    //Mat mask;
-
-    inRange(hsv, LOW_HSV_BLUE, HIG_HSV_BLUE, dst);
-
-    Mat kernel = Mat::ones(KERNEL_SIZE, KERNEL_SIZE, CV_8UC1);
-
-    dilate(dst, dst, kernel);
-    morphologyEx(dst, dst, MORPH_CLOSE, kernel);
-
-/*erode(dst, dst, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-		dilate( dst, dst, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-		dilate( dst, dst, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-		erode(dst, dst, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-  */  //dst = mask.clone();
-}
-
-void detect_sign(Mat &mask, Rect &sign)
-{
-	
-	bool isSign = false;
-    vector<vector<Point>> contours;
-    vector<Vec4i> hierarchy;
-
-    findContours(mask, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
-
-    float max_area = 0;
-    sign = Rect(0, 0, 0, 0);
-    for (int i = 0; i < contours.size(); i++)
-    {
-        Rect bound = boundingRect(contours[i]);
-        double contour_area = contourArea(contours[i]);
-        double ellipse_area = (3.14f * (double)(bound.width / 2) * (double)(bound.height / 2));
-        if (contour_area > max_area)
-            if (contour_area >= MIN_CONTOUR_AREA)
-                if ((float)bound.width / FRAME_WIDTH > MIN_RATIO_BOUND_WIDTH_PER_FRAME_WIDTH)
-                    if ((1 - DIF_RATIO_BOUND_WIDTH_PER_HEIGHT < (float)bound.width / bound.height) && ((float)bound.width / bound.height < 1 + DIF_RATIO_BOUND_WIDTH_PER_HEIGHT))
-                        if ((1 - DIF_RATIO_CONTOUR_AREA < ((double)contour_area / ellipse_area)) && ((double)contour_area / ellipse_area < 1 + DIF_RATIO_CONTOUR_AREA))
-                        {
-				isSign = true;
-                            cout << "area contour: " << contour_area << endl;
-                            sign = bound;
-                            max_area = contour_area;
-                        }
-    }
-	/*if(isSign){
-		cout << "reach set throttle=======================================" << endl;
-		set_throttle_val = 2;
-		//api_set_FORWARD_control(pca9685, set_throttle_val);
-	} else {
-		set_throttle_val = throttle_config;
-	}*/
-}
-
-
-
-int api_sign_detection(Mat &img, sign_recognizer& sr)
-{
-   // resize(img, img, cv::Size(FRAME_HEIGHT, FRAME_WIDTH));
- imshow("___", img);
-    Mat mask;
-    get_mask(img, mask);
-    imshow("mask", mask);
-
-   // Mat gray;
-   // cvtColor(img, gray, COLOR_BGR2GRAY);
-
-    Rect sign;
-    detect_sign(mask, sign);
-	//api_set_FORWARD_control(pca9685, set_throttle_val);
-
-   sr.configure(mask, img, sign);
-    //cout << sign.x << ' ' << sign.y << ' ' << sign.width << ' ' << sign.height;
-  //  return recognize_sign(sign, gray);
-
-  return sr.recognize();
-}
 
 cv::Mat remOutlier(const cv::Mat &gray)
 {
@@ -258,6 +107,7 @@ cv::Mat remOutlier(const cv::Mat &gray)
     }
     return poly;
 }
+
 char analyzeFrame(const VideoFrameRef &frame_depth, const VideoFrameRef &frame_color, Mat &depth_img, Mat &color_img)
 {
     DepthPixel *depth_img_data;
@@ -302,7 +152,6 @@ double getTheta(Point car, Point dst)
 }
 
 /////// My function
-
 cv::Mat filterLane(const cv::Mat &imgLane, bool &pop, Point &point, int check, bool &preState)
 {
     pop = false;
@@ -383,78 +232,6 @@ cv::Mat filterLane(const cv::Mat &imgLane, bool &pop, Point &point, int check, b
     // return result;
 }
 
-void controlTurn(PCA9685 *&pca9685, int dir)
-{
-    if (dir == SIGN_LEFT)
-    {
-        double theta = ALPHA * 78;
-        api_set_STEERING_control(pca9685, theta);
-        cout << "Turn Left==================================================" << endl;
-        sleep(1);
-        cout << "Normal" << endl;
-    }
-    else if (dir == SIGN_RIGHT)
-    {
-        double theta = -ALPHA * 78;
-        api_set_STEERING_control(pca9685, theta);
-        cout << "Turn Right==================================================" << endl;
-        sleep(1);
-        cout << "Normal" << endl;
-    }
-}
-
-void *detectSign(void *)
-{
-  /*  while (1)
-    {
-        //bool getFrame = (bool)var;
-        //cv::imshow("IMG Color", colorImg);
-        //cout << "sccs" << endl;
-        bool check = getFrame;
-        if (getFrame)
-        {
-		Rect detectRoi(colorImg.cols/5,colorImg.rows/4,3*colorImg.cols/5,3*colorImg.rows/4);
-            Mat img = colorImg(detectRoi);
-            resize(img, img, cv::Size(FRAME_HEIGHT, FRAME_WIDTH));
-            //imshow("img", img);
-//            int class_id = api_sign_detection(img, sr);
-            if (class_id != NO_SIGN)
-            {
-                if (class_id == SIGN_LEFT)
-                    detectLeft++;
-                if (class_id == SIGN_RIGHT)
-                    detectRight++;
-            }
-            countDetect++;
-            if (countDetect >= N_SAMPLE)
-            {
-                if (detectLeft >= ACCEPT_SIGN)
-                {
-                    flagTurn = true;
-                    dirTurn = SIGN_LEFT;
-                    //controlTurn(pca9685, SIGN_LEFT);
-                }
-                else if (detectRight >= ACCEPT_SIGN)
-                {
-                    flagTurn = true;
-                    dirTurn = SIGN_RIGHT;
-                    //controlTurn(pca9685, SIGN_RIGHT);
-                }
-                countDetect = 0;
-                detectRight = 0;
-                detectLeft = 0;
-            }
-            preDetect = class_id;
-            endThread = true;
-            getFrame = false;
-		//waitKey(1);
-            //pthread_exit(NULL);
-        }
-        usleep(3);
-    }*/
-}
-
-
 ///////////////////////cose test
 
 void get_obtacle(Mat depthMap, int &xL, int &xR, int &y, int &w)
@@ -526,9 +303,6 @@ void get_obtacle(Mat depthMap, int &xL, int &xR, int &y, int &w)
     y = intersect.y;
     w = intersect.width;
     //int h = intersect.height;
-	
-	
-
     imshow( "BoundingRect", binImg );
     if(!grayImage.empty())
         imshow( "gray", crop_grayImage );
@@ -536,6 +310,7 @@ void get_obtacle(Mat depthMap, int &xL, int &xR, int &y, int &w)
         imshow( "depth", crop_depthMap );
 */
 }
+
 void PointCenter_Displacement(int &xTam, int xL, int xR)
 {
     int dodaixe = 30;
@@ -561,7 +336,25 @@ void PointCenter_Displacement(int &xTam, int xL, int xR)
     }
 }
 
-
+void controlTurn(PCA9685 *&pca9685, int dir)
+{
+    if (dir == SIGN_LEFT)
+    {
+        double theta = ALPHA * 78;
+        api_set_STEERING_control(pca9685, theta);
+        cout << "Turn Left==================================================" << endl;
+        sleep(1);
+        cout << "Normal" << endl;
+    }
+    else if (dir == SIGN_RIGHT)
+    {
+        double theta = -ALPHA * 78;
+        api_set_STEERING_control(pca9685, theta);
+        cout << "Turn Right==================================================" << endl;
+        sleep(1);
+        cout << "Normal" << endl;
+    }
+}
 
 //////////////////////////////////////
 
@@ -737,10 +530,9 @@ int main(int argc, char *argv[])
     bool preLeft = false;
     bool preRight = false;
 
-
     sign_recognizer sr;
     sr.init();
-
+    /*
     if (TEST_DETECT_SIGN)
     {
         while (1)
@@ -775,7 +567,7 @@ int main(int argc, char *argv[])
             waitKey(1);
             //destroyAllWindows();
         }
-    }
+    }*/
 
     int road_width;
     bool road_width_set = false;
@@ -1236,6 +1028,10 @@ int main(int argc, char *argv[])
             if (!stopped)
             {
                 fprintf(stderr, "OFF\n");
+                stopped = true;
+                started = false;
+            }
+            api_set_FORWARD_control(pca9685, throttle_val);stderr, "OFF\n");
                 stopped = true;
                 started = false;
             }
