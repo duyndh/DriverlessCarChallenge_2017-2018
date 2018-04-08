@@ -24,65 +24,12 @@ using namespace EmbeddedFramework;
 #define VIDEO_FRAME_WIDTH 320	
 #define VIDEO_FRAME_HEIGHT 240
 
-<<<<<<< HEAD
-#define IMG_DIR "img9.png"
-
-#define FRAME_WIDTH 640
-#define FRAME_HEIGHT 480
-
-#define LOW_HSV_BLUE Scalar(109, 60, 120)
-#define HIG_HSV_BLUE Scalar(133, 255, 255)
-
-#define KERNEL_SIZE 5
-#define SIGN_SIZE 100
-#define MIN_RATIO_BOUND_WIDTH_PER_FRAME_WIDTH 0.05
-#define DIF_RATIO_BOUND_WIDTH_PER_HEIGHT 0.5
-#define DIF_RATIO_CONTOUR_AREA 0.1
-#define MIN_CONTOUR_AREA 1800
-
-#define SW1_PIN 160
-#define SW2_PIN 161
-#define SW3_PIN 163
-#define SW4_PIN 164
-#define SENSOR 165
-#define GREEN_MIN Scalar(34,138,12)
-#define GREEN_MAX Scalar(83,246,124)
-#define AREA_MIN 17000
-
-enum SIGN_INDEX
-{
-    NO_SIGN = 0,
-    SIGN_STOP = 1;
-    SIGN_LEFT = 2,
-    SIGN_RIGHT = 3,
-};
-
-bool flagTurn = false;
-int dirTurn = 0;
-Mat colorImg;
-//bool getFrame = false;
-bool endThread = true;
-bool getFrame = false;
-
-int preDetect = NO_SIGN;
-int countDetect = 0;
-int detectLeft = 0;
-int detectRight = 0;
-int set_throttle_val = 0;
-int throttle_config = 0;
-bool test_obt= false;
-PCA9685 *pca9685 = new PCA9685();
-
-cv::Mat remOutlier(const cv::Mat &gray)
-{
-=======
 #define SW1_PIN	160
 #define SW2_PIN	161
 #define SW3_PIN	163
 #define SW4_PIN	164
 #define SENSOR	166
 cv::Mat remOutlier(const cv::Mat &gray) {
->>>>>>> parent of 035dac7... Semi Round
     int esize = 1;
     cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT,
         cv::Size( 2*esize + 1, 2*esize+1 ),
@@ -103,17 +50,9 @@ cv::Mat remOutlier(const cv::Mat &gray) {
     }
     return poly;
 }
-<<<<<<< HEAD
-
-char analyzeFrame(const VideoFrameRef &frame_depth, const VideoFrameRef &frame_color, Mat &depth_img, Mat &color_img)
-{
-    DepthPixel *depth_img_data;
-    RGB888Pixel *color_img_data;
-=======
 char analyzeFrame(const VideoFrameRef& frame_depth,const VideoFrameRef& frame_color,Mat& depth_img, Mat& color_img) {
     DepthPixel* depth_img_data;
     RGB888Pixel* color_img_data;
->>>>>>> parent of 035dac7... Semi Round
 
     int w = frame_color.getWidth();
     int h = frame_color.getHeight();
@@ -150,216 +89,6 @@ double getTheta(Point car, Point dst) {
     return atan(dx / dy) * 180 / pi;
 }
 
-<<<<<<< HEAD
-/////// My function
-cv::Mat filterLane(const cv::Mat &imgLane, bool &pop, Point &point, int check, bool &preState)
-{
-    pop = false;
-    point.x = 0;
-    point.y = 0;
-    std::vector<std::vector<cv::Point>> contours;
-    std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(imgLane, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-    if (contours.size() == 0)
-    {
-        cv::Mat none = cv::Mat::zeros(imgLane.size(), CV_8UC1);
-        return none;
-    }
-    cv::Mat result = cv::Mat::zeros(imgLane.size(), CV_8UC1);
-    int sumX = 0;
-    int sumY = 0;
-    int maxArea = 0;
-    int maxIndex = 0;
-    for (int i = 0; i < (int)contours.size(); ++i)
-    {
-        int s = cv::contourArea(contours[i]);
-        if (s > maxArea)
-        {
-            maxArea = s;
-            maxIndex = i;
-        }
-    }
-    if (cv::contourArea(contours[maxIndex]) < 100)
-    {
-        cv::Mat none = cv::Mat::zeros(imgLane.size(), CV_8UC1);
-        return none;
-    }
-    int xMin = 0, yMin = 1000, xMax = 0, yMax = -1;
-    for (int i = 0; i < contours[maxIndex].size(); i++)
-    {
-        // if (contours[maxIndex][i].y > yMax)
-        // {
-        //     yMax = contours[maxIndex][i].y;
-        //     xMax = contours[maxIndex][i].x;
-        // }
-        // if (contours[maxIndex][i].y < yMin)
-        // {
-        //     yMin = contours[maxIndex][i].y;
-        //     xMin = contours[maxIndex][i].x;
-        // }
-        sumX += contours[maxIndex][i].x;
-        sumY += contours[maxIndex][i].y;
-    }
-
-    //if((xMax>=xMin) && (check==1)){
-    cv::drawContours(result, contours, maxIndex, cv::Scalar(255), CV_FILLED);
-    point.x = sumX / contours[maxIndex].size();
-    point.y = sumY / contours[maxIndex].size();
-
-	if ((point.x  > imgLane.cols/2) && (check == -1) && (preState == false))
-    {
-	//cout << "sum X: " << sumX << endl;
-        cv::Mat none = cv::Mat::zeros(imgLane.size(), CV_8UC1);
-        return none;
-    }
-    if ((point.x  < imgLane.cols / 2) && (check == 1) && (preState == false))
-    {
-        cv::Mat none = cv::Mat::zeros(imgLane.size(), CV_8UC1);
-        return none;
-    }
-
-
-    pop = true;
-    return result;
-    // } else
-    // if((xMax<=xMin) && (check==-1)){
-    //     cv::drawContours(result, contours, maxIndex, cv::Scalar(255), CV_FILLED);
-    //     point.x = sumX / contours[maxIndex].size();
-    //     point.y = sumY / contours[maxIndex].size();
-    //     pop = true;
-    //     return result;
-    // }
-    // return result;
-}
-
-///////////////////////cose test
-
-void get_obtacle(Mat depthMap, int &xL, int &xR, int &y, int &w)
-{
-    ////
-   /// imshow("depthMap",depthMap);
-////
-    using namespace std;
-    using namespace cv;
-     // Init//
-    int slice_nb = 3;
-    int lower_slice_idx = 3;
-    int upper_slice_idx = lower_slice_idx + slice_nb;
-    //int lower_bound = DIST_MIN + lower_slice_idx * SLICE_DEPTH;
-    //int upper_bound = lower_bound + slice_nb*SLICE_DEPTH;
-    int lower_bound = 5;//20; /////xa gan
-    int upper_bound = 50;//50;
-	test_obt= false;
-
-    
-    //Mat depthMap;
-    Mat grayImage;
-    vector< Rect > rects;
-    Rect intersect;
-    vector< Rect > output_boxes;
-
-    Rect roi_1 = Rect(0, grayImage.rows/4,
-                    grayImage.cols, grayImage.rows/2);
-    Rect roi_2(0,32 , 320, 118);
-
-    int frame_width = 320; //capture.get( CV_CAP_PROP_FRAME_WIDTH );
-    int frame_height = 240; //capture.get( CV_CAP_PROP_FRAME_HEIGHT );
-
-    //api_kinect_cv_get_images(capture, depthMap , grayImage); //get depth
-
-    Mat crop_grayImage = grayImage(roi_1);
-    Mat crop_depthMap = depthMap(roi_1);
-
-    test_obt = api_kinect_cv_get_obtacle_rect( depthMap, output_boxes, roi_2, lower_bound, upper_bound );/////////--kiem tra co vat can hay khong 
-	if (test_obt == true) cout<< "co vat can" << endl;
-	else cout<<"khong vat can\n";
-//--------------------------------------------------------------
-	
-    Mat binImg = Mat::zeros(depthMap.size(), CV_8UC1);
-
-    api_kinect_cv_center_rect_gen( rects, frame_width, frame_height);
-    Rect center_rect = rects[lower_slice_idx];
-    center_rect = center_rect + Size(0, slice_nb*SLICE_DEPTH); // lay center_rect
-	int temp=0;
-
-    for( int i = 0; i< output_boxes.size(); i++ )
-        {
-//                    rectangle( binImg, output_boxes[i], Scalar( 255) );
-            //intersect = output_boxes[i] & center_rect;
-            intersect = output_boxes[i];
-            if( intersect.area() != 0 && ((float)intersect.width/intersect.height<1.2 || (float)intersect.width/intersect.height>0.2))
-               {
-                    rectangle( binImg, intersect, Scalar( 255) );
-                    //cout<< endl<< "Has Collision detect"<< flush;
-			temp++;
-			cout <<temp;
-                }
-
-		else cout <<"intersect = 0"<<endl;
-        }
-        //lay toa do, rong, cao.
-    xL = intersect.x;
-    xR = intersect.x + intersect.width;
-    y = intersect.y;
-    w = intersect.width;
-    //int h = intersect.height;
-    imshow( "BoundingRect", binImg );
-    if(!grayImage.empty())
-        imshow( "gray", crop_grayImage );
-/*   if (!depthMap.empty() )
-        imshow( "depth", crop_depthMap );
-*/
-}
-
-void PointCenter_Displacement(int &xTam, int xL, int xR)
-{
-    int dodaixe = 30;
-    int distan = 7;
-
-    if (xTam < xL)
-    {
-        if (  xTam > (xL - dodaixe/2 - distan) )
-            xTam = xL + dodaixe/2 + distan;
-        else
-            xTam = xTam;
-    }
-    else if (xTam > xR)
-    {
-        if (  xTam < (xR + dodaixe/2 + distan) )
-            xTam = xL + dodaixe/2 + distan;
-        else
-            xTam = xTam;
-    }
-    else
-    {
-	cout << "AAAAAAAAAAAAAAA";
-    }
-}
-
-void controlTurn(PCA9685 *&pca9685, int dir)
-{
-    if (dir == SIGN_LEFT)
-    {
-        double theta = ALPHA * 78;
-        api_set_STEERING_control(pca9685, theta);
-        cout << "Turn Left==================================================" << endl;
-        sleep(1);
-        cout << "Normal" << endl;
-    }
-    else if (dir == SIGN_RIGHT)
-    {
-        double theta = -ALPHA * 78;
-        api_set_STEERING_control(pca9685, theta);
-        cout << "Turn Right==================================================" << endl;
-        sleep(1);
-        cout << "Normal" << endl;
-    }
-}
-
-//////////////////////////////////////
-
-=======
->>>>>>> parent of 035dac7... Semi Round
 ///////// utilitie functions  ///////////////////////////
 
 int main( int argc, char* argv[] ) {
@@ -512,65 +241,10 @@ int main( int argc, char* argv[] ) {
     bool is_show_cam = true;
 	int count_s,count_ss;
     int frame_id = 0;
-<<<<<<< HEAD
-    vector<cv::Vec4i> lines;
-    bool oneLine = false;
-    int preX = 0;
-    int preY = 0;
-    bool preLeft = false;
-    bool preRight = false;
-
-    sign_recognizer sr;
-    sr.init();
-    /*
-    if (TEST_DETECT_SIGN)
-    {
-        while (1)
-        {
-            int readyStream = -1;
-            rc = OpenNI::waitForAnyStream(streams, 2, &readyStream, SAMPLE_READ_WAIT_TIMEOUT);
-            if (rc != STATUS_OK)
-            {
-                printf("Wait failed! (timeout is %d ms)\n%s\n", SAMPLE_READ_WAIT_TIMEOUT, OpenNI::getExtendedError());
-                break;
-            }
-
-            depth.readFrame(&frame_depth);
-            color.readFrame(&frame_color);
-            frame_id++;
-            char recordStatus = analyzeFrame(frame_depth, frame_color, depthImg, colorImg);
-            flip(depthImg, depthImg, 1);
-            flip(colorImg, colorImg, 1);
-            Mat img = colorImg.clone();
-            resize(img, img, cv::Size(FRAME_HEIGHT, FRAME_WIDTH));
-            imshow("img", img);
-
-            int class_id = api_sign_detection(img, sr);
-
-            if (class_id == SIGN_LEFT)
-                cout << "=> LEFT SIGN\n";
-            else if (class_id == SIGN_RIGHT)
-                cout << "=> RIGHT SIGN\n";
-            else
-                cout << "=> NO SIGN\n";
-
-            waitKey(1);
-            //destroyAllWindows();
-        }
-    }*/
-
-    int road_width;
-    bool road_width_set = false;
-
-    while (true)
-    {
-        Point center_point(0, 0);
-=======
 	vector<cv::Vec4i> lines;
     while ( true )
     { 
         Point center_point(0,0);
->>>>>>> parent of 035dac7... Semi Round
 
         st = getTickCount();
         key = getkey();
@@ -724,20 +398,9 @@ int main( int argc, char* argv[] ) {
             throttle_val = 0;
             if (!stopped) {
                 fprintf(stderr, "OFF\n");
-<<<<<<< HEAD
-                stopped = true;
-                started = false;
-            }
-            api_set_FORWARD_control(pca9685, throttle_val);stderr, "OFF\n");
-                stopped = true;
-                started = false;
-            }
-            api_set_FORWARD_control(pca9685, throttle_val);
-=======
                 stopped = true; started = false;
 			}
 			api_set_FORWARD_control( pca9685,throttle_val);
->>>>>>> parent of 035dac7... Semi Round
             sleep(1);
         }
     }
